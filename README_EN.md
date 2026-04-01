@@ -48,7 +48,7 @@ git clone https://github.com/YOUR_USERNAME/yourself-skill ~/.claude/skills/creat
 ### Dependencies (Optional)
 
 ```bash
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ---

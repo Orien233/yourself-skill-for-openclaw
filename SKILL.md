@@ -39,16 +39,18 @@ allowed-tools: Read, Write, Edit, Bash
 |------|----------|
 | 读取 PDF/图片 | `Read` 工具 |
 | 读取 MD/TXT 文件 | `Read` 工具 |
-| 解析微信聊天记录导出 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py` |
-| 解析 QQ 聊天记录导出 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/qq_parser.py` |
-| 解析社交媒体内容 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/social_parser.py` |
-| 分析照片元信息 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py` |
+| 解析微信聊天记录导出 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py` |
+| 解析 QQ 聊天记录导出 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/qq_parser.py` |
+| 解析社交媒体内容 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/social_parser.py` |
+| 分析照片元信息 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py` |
 | 写入/更新 Skill 文件 | `Write` / `Edit` 工具 |
-| 版本管理 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py` |
-| 列出已有 Skill | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list` |
-| 合并生成 SKILL.md | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine` |
+| 版本管理 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/version_manager.py` |
+| 列出已有 Skill | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list` |
+| 合并生成 SKILL.md | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine` |
 
 **目标目录**：生成的 Skill 必须写入 `./.claude/skills/{slug}/`，这样 `/{slug}` 才能被 Claude Code 直接识别和调用。
+
+> **Windows 用户注意**：如果你使用 Git Bash，`python3` 可能不可用，所有命令已统一使用 `python`。若运行时中文输出乱码，请在 Bash 中先执行 `export PYTHONIOENCODING=utf-8`。
 
 ---
 
@@ -99,7 +101,7 @@ allowed-tools: Read, Write, Edit, Bash
 #### 方式 A：微信聊天记录导出
 
 ```
-python3 ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py \
+python ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py \
   --file {path} \
   --target "我" \
   --output /tmp/wechat_out.txt \
@@ -121,7 +123,7 @@ python3 ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py \
 #### 方式 B：QQ 聊天记录导出
 
 ```
-python3 ${CLAUDE_SKILL_DIR}/tools/qq_parser.py \
+python ${CLAUDE_SKILL_DIR}/tools/qq_parser.py \
   --file {path} \
   --target "我" \
   --output /tmp/qq_out.txt
@@ -141,7 +143,7 @@ python3 ${CLAUDE_SKILL_DIR}/tools/qq_parser.py \
 #### 方式 D：照片分析
 
 ```
-python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py \
+python ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py \
   --dir {photo_dir} \
   --output /tmp/photo_out.txt
 ```
@@ -230,7 +232,7 @@ cat > /tmp/yourself_{slug}/persona.md <<'PERSONAEOF'
 {persona_content}
 PERSONAEOF
 
-python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
+python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
   --action create \
   --slug {slug} \
   --base-dir ./.claude/skills \
@@ -246,7 +248,7 @@ python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
 - `self.md` → `.claude/skills/{slug}/self.md`
 - `persona.md` → `.claude/skills/{slug}/persona.md`
 - `meta.json` → `.claude/skills/{slug}/meta.json`
-- 然后用 Bash 运行 `python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./.claude/skills` 生成 `SKILL.md`
+- 然后用 Bash 运行 `python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./.claude/skills` 生成 `SKILL.md`
 - 如果 combine 也失败，直接手动写入 `.claude/skills/{slug}/SKILL.md`（参考 combine 的输出模板）
 
 `meta.json` 内容：
@@ -298,12 +300,12 @@ python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
 3. 参考 `${CLAUDE_SKILL_DIR}/prompts/merger.md` 分析增量内容
 4. 存档当前版本（用 Bash）：
    ```bash
-   python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py --action backup --slug {slug} --base-dir ./.claude/skills
+   python ${CLAUDE_SKILL_DIR}/tools/version_manager.py --action backup --slug {slug} --base-dir ./.claude/skills
    ```
 5. 用 `Edit` 工具追加增量内容到对应文件（路径：`.claude/skills/{slug}/self.md` 或 `.claude/skills/{slug}/persona.md`）
 6. 重新生成 `SKILL.md`（用 Bash 调用 skill_writer combine）：
    ```bash
-   python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./.claude/skills
+   python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./.claude/skills
    ```
 7. 更新 `meta.json` 的 version 和 updated_at（路径：`.claude/skills/{slug}/meta.json`）
 
@@ -319,7 +321,7 @@ python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
 4. 用 `Edit` 工具追加到对应文件的 `## Correction 记录` 节（`.claude/skills/{slug}/self.md` 或 `.claude/skills/{slug}/persona.md`）
 5. 重新生成 `SKILL.md`：
    ```bash
-   python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./.claude/skills
+   python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./.claude/skills
    ```
 
 ---
@@ -328,12 +330,12 @@ python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
 
 `/list-selves`：
 ```bash
-python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list --base-dir ./.claude/skills
+python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list --base-dir ./.claude/skills
 ```
 
 `/yourself-rollback {slug} {version}`：
 ```bash
-python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py --action rollback --slug {slug} --version {version} --base-dir ./.claude/skills
+python ${CLAUDE_SKILL_DIR}/tools/version_manager.py --action rollback --slug {slug} --version {version} --base-dir ./.claude/skills
 ```
 
 `/delete-yourself {slug}`：

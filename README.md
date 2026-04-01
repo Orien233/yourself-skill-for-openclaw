@@ -48,7 +48,7 @@ git clone https://github.com/notdog1998/yourself-skill ~/.claude/skills/create-y
 ### 依赖（可选）
 
 ```bash
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ---
