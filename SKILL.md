@@ -48,7 +48,7 @@ allowed-tools: Read, Write, Edit, Bash
 | 列出已有 Skill | `Bash` → `python {baseDir}/tools/skill_writer.py --action list` |
 | 合并生成 SKILL.md | `Bash` → `python {baseDir}/tools/skill_writer.py --action combine` |
 
-**目标目录**：生成的 Skill 必须写入 `./skills/{slug}/`，这样 `/{slug}` 才能被 Claude Code 直接识别和调用。
+**目标目录**：生成的 Skill 必须写入 `./skills/{slug}/`，推荐通过 `/skill {slug}` 调用；若已注册成功也可直接使用 `/{slug}`。
 
 > **Windows 用户注意**：如果你使用 Git Bash，`python3` 可能不可用，所有命令已统一使用 `python`。若运行时中文输出乱码，请在 Bash 中先执行 `export PYTHONIOENCODING=utf-8`。
 
@@ -56,18 +56,20 @@ allowed-tools: Read, Write, Edit, Bash
 
 ## 主流程：创建新自我 Skill
 
-### Step 1：基础信息录入（3 个问题）
+### Step 1：基础信息录入（4 个问题）
 
-参考 `{baseDir}/prompts/intake.md` 的问题序列，只问 3 个问题：
+参考 `{baseDir}/prompts/intake.md` 的问题序列，只问 4 个问题：
 
-1. **代号/昵称**（必填）
+1. **slug**（必填，仅限 `a-z0-9_`）
+   - 示例：`xiaobei` / `me_2026` / `my_self`
+2. **显示名/昵称**（必填，可中文）
    - 示例：`小北` / `自己` / `20岁的我`
-2. **基本信息**（一句话：年龄、职业、城市，想到什么写什么）
+3. **基本信息**（一句话：年龄、职业、城市，想到什么写什么）
    - 示例：`25 岁，互联网产品经理，上海`
-3. **自我画像**（一句话：MBTI、星座、性格标签、你对自己的印象）
+4. **自我画像**（一句话：MBTI、星座、性格标签、你对自己的印象）
    - 示例：`INTJ 摩羯座 社恐但话痨 深夜emo型选手`
 
-除代号外均可跳过。收集完后汇总确认再进入下一步。
+除 slug 外均可跳过。收集完后汇总确认再进入下一步。
 
 ### Step 2：原材料导入
 
@@ -282,7 +284,8 @@ python {baseDir}/tools/skill_writer.py \
 ✅ 自我 Skill 已创建！
 
 文件位置：./skills/{slug}/
-触发词：/{slug}（完整版 — 像你一样思考和说话）
+推荐命令：/skill {slug}（完整版 — 像你一样思考和说话）
+        兼容直呼：/{slug}
         /{slug}-self（自我档案模式 — 帮你回忆和分析自己）
         /{slug}-persona（人格模式 — 仅性格和表达风格）
 
@@ -371,11 +374,12 @@ List all generated self skills when the user says `/list-selves`.
 
 ## Main Flow: Create a New Self Skill
 
-### Step 1: Basic Info Collection (3 questions)
+### Step 1: Basic Info Collection (4 questions)
 
-1. **Alias / Nickname** (required)
-2. **Basic info** (one sentence: age, occupation, city)
-3. **Self portrait** (one sentence: MBTI, zodiac, traits, your impression of yourself)
+1. **slug** (required, `a-z0-9_` only)
+2. **Display name / nickname** (required, Chinese allowed)
+3. **Basic info** (one sentence: age, occupation, city)
+4. **Self portrait** (one sentence: MBTI, zodiac, traits, your impression of yourself)
 
 ### Step 2: Source Material Import
 
@@ -410,7 +414,8 @@ Generates:
 | Command | Description |
 |---------|-------------|
 | `/list-selves` | List all self Skills |
-| `/{slug}` | Full Skill (think and speak like you) |
+| `/skill {slug}` | Recommended full invocation |
+| `/{slug}` | Direct invocation (if registered) |
 | `/{slug}-self` | Self-archive mode |
 | `/{slug}-persona` | Persona only |
 | `/yourself-rollback {slug} {version}` | Rollback to historical version |

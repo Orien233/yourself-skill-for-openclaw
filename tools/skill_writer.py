@@ -173,7 +173,7 @@ def create_skill(base_dir: str, slug: str, meta: dict, self_content: str, person
 def main():
     parser = argparse.ArgumentParser(description='Skill 文件管理器')
     parser.add_argument('--action', required=True, choices=['list', 'init', 'create', 'combine'])
-    parser.add_argument('--base-dir', default='./.claude/skills', help='基础目录（默认：./.claude/skills）')
+    parser.add_argument('--base-dir', default='./skills', help='基础目录（默认：./skills）')
     parser.add_argument('--slug', help='自我代号')
     parser.add_argument('--meta', help='meta.json 文件路径（create 时使用）')
     parser.add_argument('--self', help='self.md 内容文件路径（create 时使用）')

@@ -55,8 +55,9 @@ Part A（Self Memory）补充：结合你的价值观、经历、习惯，让回
 ```
 用户触发 /create-yourself
   ↓
-[Step 1] 基础信息录入（3个问题，除代号外均可跳过）
-  - 代号/昵称
+[Step 1] 基础信息录入（4个问题，除 slug 外均可跳过）
+  - slug（仅限 a-z0-9_）
+  - 显示名/昵称（可中文）
   - 基本信息（年龄、职业、城市）
   - 自我画像（MBTI、星座、性格标签、主观印象）
   ↓
@@ -75,7 +76,7 @@ Part A（Self Memory）补充：结合你的价值观、经历、习惯，让回
   - 用户可直接确认或修改
   ↓
 [Step 5] 写入文件，立即可用
-  - 生成 .claude/skills/{slug}/ 目录
+  - 生成 ./skills/{slug}/ 目录
   - 包含 SKILL.md（完整组合版）
   - 包含 self.md 和 persona.md（独立部分）
   ↓
@@ -92,7 +93,8 @@ Part A（Self Memory）补充：结合你的价值观、经历、习惯，让回
 ### 基础信息字段
 
 ```yaml
-name:        代号/昵称                  # 必填
+slug:        触发代号（a-z0-9_）        # 必填
+name:        显示名/昵称（可中文）       # 必填
 age:         年龄                       # 可选
 occupation:  职业                       # 可选
 city:        城市                       # 可选
@@ -272,7 +274,7 @@ create-yourself/                    # meta-skill
 │   ├── skill_writer.py              # 文件管理
 │   └── version_manager.py           # 版本管理
 │
-.claude/skills/{slug}/              # 生成的自我 Skill（可直接运行）
+./skills/{slug}/                    # 生成的自我 Skill（可直接运行）
 │       ├── SKILL.md                 # 完整组合版
 │       ├── self.md                  # Part A：自我记忆
 │       ├── persona.md               # Part B：人格
@@ -292,7 +294,7 @@ create-yourself/                    # meta-skill
 
 ## 关键文件格式
 
-### `.claude/skills/{slug}/meta.json`
+### `./skills/{slug}/meta.json`
 
 ```json
 {
@@ -323,7 +325,7 @@ create-yourself/                    # meta-skill
 }
 ```
 
-### `.claude/skills/{slug}/SKILL.md` 结构
+### `./skills/{slug}/SKILL.md` 结构
 
 ```markdown
 ---
