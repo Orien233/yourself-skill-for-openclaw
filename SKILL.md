@@ -39,16 +39,16 @@ allowed-tools: Read, Write, Edit, Bash
 |------|----------|
 | 读取 PDF/图片 | `Read` 工具 |
 | 读取 MD/TXT 文件 | `Read` 工具 |
-| 解析微信聊天记录导出 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py` |
-| 解析 QQ 聊天记录导出 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/qq_parser.py` |
-| 解析社交媒体内容 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/social_parser.py` |
-| 分析照片元信息 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py` |
+| 解析微信聊天记录导出 | `Bash` → `python {baseDir}/tools/wechat_parser.py` |
+| 解析 QQ 聊天记录导出 | `Bash` → `python {baseDir}/tools/qq_parser.py` |
+| 解析社交媒体内容 | `Bash` → `python {baseDir}/tools/social_parser.py` |
+| 分析照片元信息 | `Bash` → `python {baseDir}/tools/photo_analyzer.py` |
 | 写入/更新 Skill 文件 | `Write` / `Edit` 工具 |
-| 版本管理 | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/version_manager.py` |
-| 列出已有 Skill | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list` |
-| 合并生成 SKILL.md | `Bash` → `python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine` |
+| 版本管理 | `Bash` → `python {baseDir}/tools/version_manager.py` |
+| 列出已有 Skill | `Bash` → `python {baseDir}/tools/skill_writer.py --action list` |
+| 合并生成 SKILL.md | `Bash` → `python {baseDir}/tools/skill_writer.py --action combine` |
 
-**目标目录**：生成的 Skill 必须写入 `./.claude/skills/{slug}/`，这样 `/{slug}` 才能被 Claude Code 直接识别和调用。
+**目标目录**：生成的 Skill 必须写入 `./skills/{slug}/`，这样 `/{slug}` 才能被 Claude Code 直接识别和调用。
 
 > **Windows 用户注意**：如果你使用 Git Bash，`python3` 可能不可用，所有命令已统一使用 `python`。若运行时中文输出乱码，请在 Bash 中先执行 `export PYTHONIOENCODING=utf-8`。
 
@@ -58,7 +58,7 @@ allowed-tools: Read, Write, Edit, Bash
 
 ### Step 1：基础信息录入（3 个问题）
 
-参考 `${CLAUDE_SKILL_DIR}/prompts/intake.md` 的问题序列，只问 3 个问题：
+参考 `{baseDir}/prompts/intake.md` 的问题序列，只问 3 个问题：
 
 1. **代号/昵称**（必填）
    - 示例：`小北` / `自己` / `20岁的我`
@@ -101,7 +101,7 @@ allowed-tools: Read, Write, Edit, Bash
 #### 方式 A：微信聊天记录导出
 
 ```
-python ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py \
+python {baseDir}/tools/wechat_parser.py \
   --file {path} \
   --target "我" \
   --output /tmp/wechat_out.txt \
@@ -123,7 +123,7 @@ python ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py \
 #### 方式 B：QQ 聊天记录导出
 
 ```
-python ${CLAUDE_SKILL_DIR}/tools/qq_parser.py \
+python {baseDir}/tools/qq_parser.py \
   --file {path} \
   --target "我" \
   --output /tmp/qq_out.txt
@@ -143,7 +143,7 @@ python ${CLAUDE_SKILL_DIR}/tools/qq_parser.py \
 #### 方式 D：照片分析
 
 ```
-python ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py \
+python {baseDir}/tools/photo_analyzer.py \
   --dir {photo_dir} \
   --output /tmp/photo_out.txt
 ```
@@ -181,18 +181,18 @@ python ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py \
 将收集到的所有原材料和用户填写的基础信息汇总，按以下两条线分析：
 
 **线路 A（Self Memory）**：
-- 参考 `${CLAUDE_SKILL_DIR}/prompts/self_analyzer.md` 中的提取维度
+- 参考 `{baseDir}/prompts/self_analyzer.md` 中的提取维度
 - 提取：个人经历、价值观、生活习惯、重要记忆、人际关系图谱、成长轨迹
 
 **线路 B（Persona）**：
-- 参考 `${CLAUDE_SKILL_DIR}/prompts/persona_analyzer.md` 中的提取维度
+- 参考 `{baseDir}/prompts/persona_analyzer.md` 中的提取维度
 - 将用户填写的标签翻译为具体行为规则
 - 从原材料中提取：说话风格、情感模式、决策模式、人际行为
 
 ### Step 4：生成并预览
 
-参考 `${CLAUDE_SKILL_DIR}/prompts/self_builder.md` 生成 Self Memory 内容。
-参考 `${CLAUDE_SKILL_DIR}/prompts/persona_builder.md` 生成 Persona 内容（5 层结构）。
+参考 `{baseDir}/prompts/self_builder.md` 生成 Self Memory 内容。
+参考 `{baseDir}/prompts/persona_builder.md` 生成 Persona 内容（5 层结构）。
 
 向用户展示摘要（各 5-8 行），询问：
 
@@ -232,10 +232,10 @@ cat > /tmp/yourself_{slug}/persona.md <<'PERSONAEOF'
 {persona_content}
 PERSONAEOF
 
-python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
+python {baseDir}/tools/skill_writer.py \
   --action create \
   --slug {slug} \
-  --base-dir ./.claude/skills \
+  --base-dir ./skills \
   --meta /tmp/yourself_{slug}/meta.json \
   --self /tmp/yourself_{slug}/self.md \
   --persona /tmp/yourself_{slug}/persona.md
@@ -245,11 +245,11 @@ python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
 
 如果 Bash 脚本因任何原因无法执行，**必须**使用 `Write` / `Edit` 工具将文件写入以下路径：
 
-- `self.md` → `.claude/skills/{slug}/self.md`
-- `persona.md` → `.claude/skills/{slug}/persona.md`
-- `meta.json` → `.claude/skills/{slug}/meta.json`
-- 然后用 Bash 运行 `python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./.claude/skills` 生成 `SKILL.md`
-- 如果 combine 也失败，直接手动写入 `.claude/skills/{slug}/SKILL.md`（参考 combine 的输出模板）
+- `self.md` → `./skills/{slug}/self.md`
+- `persona.md` → `./skills/{slug}/persona.md`
+- `meta.json` → `./skills/{slug}/meta.json`
+- 然后用 Bash 运行 `python {baseDir}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./skills` 生成 `SKILL.md`
+- 如果 combine 也失败，直接手动写入 `./skills/{slug}/SKILL.md`（参考 combine 的输出模板）
 
 `meta.json` 内容：
 ```json
@@ -281,7 +281,7 @@ python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
 ```
 ✅ 自我 Skill 已创建！
 
-文件位置：.claude/skills/{slug}/
+文件位置：./skills/{slug}/
 触发词：/{slug}（完整版 — 像你一样思考和说话）
         /{slug}-self（自我档案模式 — 帮你回忆和分析自己）
         /{slug}-persona（人格模式 — 仅性格和表达风格）
@@ -296,18 +296,18 @@ python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
 用户提供新的聊天记录、照片或笔记时：
 
 1. 按 Step 2 的方式读取新内容
-2. 用 `Read` 读取现有 `.claude/skills/{slug}/self.md` 和 `.claude/skills/{slug}/persona.md`
-3. 参考 `${CLAUDE_SKILL_DIR}/prompts/merger.md` 分析增量内容
+2. 用 `Read` 读取现有 `./skills/{slug}/self.md` 和 `./skills/{slug}/persona.md`
+3. 参考 `{baseDir}/prompts/merger.md` 分析增量内容
 4. 存档当前版本（用 Bash）：
    ```bash
-   python ${CLAUDE_SKILL_DIR}/tools/version_manager.py --action backup --slug {slug} --base-dir ./.claude/skills
+   python {baseDir}/tools/version_manager.py --action backup --slug {slug} --base-dir ./skills
    ```
-5. 用 `Edit` 工具追加增量内容到对应文件（路径：`.claude/skills/{slug}/self.md` 或 `.claude/skills/{slug}/persona.md`）
+5. 用 `Edit` 工具追加增量内容到对应文件（路径：`./skills/{slug}/self.md` 或 `./skills/{slug}/persona.md`）
 6. 重新生成 `SKILL.md`（用 Bash 调用 skill_writer combine）：
    ```bash
-   python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./.claude/skills
+   python {baseDir}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./skills
    ```
-7. 更新 `meta.json` 的 version 和 updated_at（路径：`.claude/skills/{slug}/meta.json`）
+7. 更新 `meta.json` 的 version 和 updated_at（路径：`./skills/{slug}/meta.json`）
 
 ---
 
@@ -315,13 +315,13 @@ python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
 
 用户表达"不对"/"我不会这样说"/"我应该是"时：
 
-1. 参考 `${CLAUDE_SKILL_DIR}/prompts/correction_handler.md` 识别纠正内容
+1. 参考 `{baseDir}/prompts/correction_handler.md` 识别纠正内容
 2. 判断属于 Self Memory（事实/经历）还是 Persona（性格/说话方式）
 3. 生成 correction 记录
-4. 用 `Edit` 工具追加到对应文件的 `## Correction 记录` 节（`.claude/skills/{slug}/self.md` 或 `.claude/skills/{slug}/persona.md`）
+4. 用 `Edit` 工具追加到对应文件的 `## Correction 记录` 节（`./skills/{slug}/self.md` 或 `./skills/{slug}/persona.md`）
 5. 重新生成 `SKILL.md`：
    ```bash
-   python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./.claude/skills
+   python {baseDir}/tools/skill_writer.py --action combine --slug {slug} --base-dir ./skills
    ```
 
 ---
@@ -330,18 +330,18 @@ python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py \
 
 `/list-selves`：
 ```bash
-python ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list --base-dir ./.claude/skills
+python {baseDir}/tools/skill_writer.py --action list --base-dir ./skills
 ```
 
 `/yourself-rollback {slug} {version}`：
 ```bash
-python ${CLAUDE_SKILL_DIR}/tools/version_manager.py --action rollback --slug {slug} --version {version} --base-dir ./.claude/skills
+python {baseDir}/tools/version_manager.py --action rollback --slug {slug} --version {version} --base-dir ./skills
 ```
 
 `/delete-yourself {slug}`：
 确认后执行：
 ```bash
-rm -rf .claude/skills/{slug}
+rm -rf ./skills/{slug}
 ```
 
 ---
@@ -389,10 +389,10 @@ Options:
 ### Step 3–5: Analyze → Preview → Write Files
 
 Generates:
-- `.claude/skills/{slug}/self.md` — Self Memory (Part A)
-- `.claude/skills/{slug}/persona.md` — Persona (Part B)
-- `.claude/skills/{slug}/SKILL.md` — Combined runnable Skill
-- `.claude/skills/{slug}/meta.json` — Metadata
+- `./skills/{slug}/self.md` — Self Memory (Part A)
+- `./skills/{slug}/persona.md` — Persona (Part B)
+- `./skills/{slug}/SKILL.md` — Combined runnable Skill
+- `./skills/{slug}/meta.json` — Metadata
 
 ### Execution Rules (in generated SKILL.md)
 
