@@ -95,7 +95,7 @@ def main():
     parser = argparse.ArgumentParser(description='版本管理器')
     parser.add_argument('--action', required=True, choices=['backup', 'rollback', 'list'])
     parser.add_argument('--slug', required=True, help='自我代号')
-    parser.add_argument('--base-dir', default='./.claude/skills', help='基础目录（默认：./.claude/skills）')
+    parser.add_argument('--base-dir', default='./skills', help='基础目录（默认：./skills）')
     parser.add_argument('--version', help='回滚目标版本')
 
     args = parser.parse_args()

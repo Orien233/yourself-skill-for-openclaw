@@ -32,17 +32,22 @@
 
 ## 安装
 
-### Claude Code
+### OpenClaw（推荐）
 
-> **重要**：Claude Code 从 **git 仓库根目录** 的 `.claude/skills/` 查找 skill。请在正确的位置执行。
+> 默认安装路径：`<workspace>/skills/create-yourself`（不要放在主路径的 `.claude/skills`）。
 
 ```bash
-# 安装到当前项目（在 git 仓库根目录执行）
-mkdir -p .claude/skills
-git clone https://github.com/notdog1998/yourself-skill .claude/skills/create-yourself
+# 在你的 workspace 根目录执行
+mkdir -p ./skills
+git clone https://github.com/<your-github-id>/yourself-skill-for-openclaw ./skills/create-yourself
+```
 
-# 或安装到全局（所有项目都能用）
-git clone https://github.com/notdog1998/yourself-skill ~/.claude/skills/create-yourself
+### Claude Code（兼容）
+
+```bash
+# 如需兼容 Claude Code，可安装到当前项目
+mkdir -p ./skills
+git clone https://github.com/<your-github-id>/yourself-skill-for-openclaw ./skills/create-yourself
 ```
 
 ### 依赖（可选）
@@ -61,16 +66,17 @@ pip install -r requirements.txt
 /create-yourself
 ```
 
-按提示输入你的代号、基本信息、自我画像，然后选择数据来源。所有字段均可跳过，仅凭描述也能生成。
+按提示输入你的 **slug（仅限 a-z0-9_）**、显示名（可中文昵称）、基本信息、自我画像，然后选择数据来源。除 slug 外均可跳过，仅凭描述也能生成。
 
-完成后用 `/{slug}` 调用该自我 Skill，开始对话。
+完成后推荐用 `/skill {slug}` 调用该自我 Skill；若注册成功也可直接用 `/{slug}` 开始对话。
 
 ### 管理命令
 
 | 命令 | 说明 |
 |------|------|
 | `/list-selves` | 列出所有自我 Skill |
-| `/{slug}` | 调用完整 Skill（像你一样思考和说话） |
+| `/skill {slug}` | 推荐调用完整 Skill（像你一样思考和说话） |
+| `/{slug}` | 若已注册成功，也可直接调用完整 Skill |
 | `/{slug}-self` | 自我档案模式（帮你回忆和分析自己） |
 | `/{slug}-persona` | 人格模式（仅性格和表达风格） |
 | `/yourself-rollback {slug} {version}` | 回滚到历史版本 |
