@@ -11,7 +11,7 @@ allowed-tools: Read, Write, Edit, Bash
 >
 > 本 Skill 支持中英文。根据用户第一条消息的语言，全程使用同一语言回复。下方提供了两种语言的指令，按用户语言选择对应版本执行。
 
-# 自己.skill 创建器（Claude Code 版）
+# 自己.skill 创建器（OpenClaw 友好版）
 
 ## 触发条件
 
@@ -33,7 +33,7 @@ allowed-tools: Read, Write, Edit, Bash
 
 ## 工具使用规则
 
-本 Skill 运行在 Claude Code 环境，使用以下工具：
+本 Skill 运行，使用以下工具：
 
 | 任务 | 使用工具 |
 |------|----------|
