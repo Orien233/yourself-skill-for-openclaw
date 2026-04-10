@@ -352,7 +352,7 @@ rm -rf ./skills/{slug}
 
 # English Version
 
-# Yourself.skill Creator (Claude Code Edition)
+# Yourself.skill Creator (OpenClaw-First, Claude-Compatible Edition)
 
 ## Trigger Conditions
 
@@ -368,7 +368,7 @@ Enter evolution mode when the user says:
 - "That's wrong" / "I wouldn't say that" / "I should be"
 - `/update-yourself {slug}`
 
-List all generated self skills when the user says `/list-selves`.
+List all generated self skills when the user says `/list-selves`. Prefer `/skill {slug}` as the invocation entrypoint; direct `/{slug}` is optional only if native command registration succeeds.
 
 ---
 
@@ -414,8 +414,8 @@ Generates:
 | Command | Description |
 |---------|-------------|
 | `/list-selves` | List all self Skills |
-| `/skill {slug}` | Recommended full invocation |
-| `/{slug}` | Direct invocation (if registered) |
+| `/skill {slug}` | Recommended entrypoint (most stable) |
+| `/{slug}` | Direct invocation (optional if native command registration succeeds) |
 | `/{slug}-self` | Self-archive mode |
 | `/{slug}-persona` | Persona only |
 | `/yourself-rollback {slug} {version}` | Rollback to historical version |
