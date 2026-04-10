@@ -39,7 +39,7 @@
 ```bash
 # 在你的 workspace 根目录执行
 mkdir -p ./skills
-git clone https://github.com/<your-github-id>/yourself-skill-for-openclaw ./skills/create-yourself
+git clone https://github.com/Orien233/yourself-skill-for-openclaw ./skills/create-yourself
 ```
 
 ### Claude Code（兼容）
@@ -47,7 +47,7 @@ git clone https://github.com/<your-github-id>/yourself-skill-for-openclaw ./skil
 ```bash
 # 如需兼容 Claude Code，可安装到当前项目
 mkdir -p ./skills
-git clone https://github.com/<your-github-id>/yourself-skill-for-openclaw ./skills/create-yourself
+git clone https://github.com/Orien233/yourself-skill-for-openclaw ./skills/create-yourself
 ```
 
 ### 依赖（可选）
@@ -60,17 +60,27 @@ pip install -r requirements.txt
 
 ## 使用
 
-在 Claude Code 中输入：
+在 OpenClaw（推荐）中，优先输入：
+
+```
+/skill create-yourself
+```
+
+若当前环境已注册原生命令，也可直接尝试：
 
 ```
 /create-yourself
 ```
 
-按提示输入你的 **slug（仅限 a-z0-9_）**、显示名（可中文昵称）、基本信息、自我画像，然后选择数据来源。除 slug 外均可跳过，仅凭描述也能生成。
+按提示输入你的 **slug（仅限 `a-z0-9_`）**、显示名（可中文昵称）、基本信息、自我画像，然后选择数据来源。除 slug 外均可跳过，仅凭描述也能生成。
 
-完成后推荐用 `/skill {slug}` 调用该自我 Skill；若注册成功也可直接用 `/{slug}` 开始对话。
+> slug 命名建议：仅允许 `a-z0-9_`；建议使用英文/拼音/下划线；推荐保持简短，避免命令名过长。
+
+创建完成后，**优先使用 `/skill {slug}`** 调用该自我 Skill。`/{slug}` 仅在原生命令已注册成功时可选。
 
 ### 管理命令
+
+`/skill {slug}` 是最稳妥入口。`/{slug}`、`/{slug}-self`、`/{slug}-persona` 依赖动态命令注册，可能因环境而不可用。
 
 | 命令 | 说明 |
 |------|------|
@@ -193,11 +203,13 @@ create-yourself/
 │   ├── photo_analyzer.py   # 照片元信息分析
 │   ├── skill_writer.py     # Skill 文件管理
 │   └── version_manager.py  # 版本存档与回滚
-├── selves/                 # 生成的自我 Skill（gitignored）
+├── selves/example_me       # 仓库内置示例（非运行时默认输出目录）
 ├── docs/PRD.md
 ├── requirements.txt
 └── LICENSE
 ```
+
+> 目录说明：`selves/example_me` 是仓库中的示例内容；实际运行时新生成的 Skill 默认写入 `./skills/{slug}`。
 
 ---
 

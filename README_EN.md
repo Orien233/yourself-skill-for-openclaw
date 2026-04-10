@@ -32,17 +32,22 @@ Generate a digital replica that thinks with your catchphrases and replies with y
 
 ## Installation
 
-### Claude Code
+### OpenClaw (Recommended)
 
-> **Important**: Claude Code looks for skills in `.claude/skills/` from the **git repo root**. Run these commands in the correct location.
+> Default install path: `<workspace>/skills/create-yourself` (do **not** place it under the main `.claude/skills`).
 
 ```bash
-# Install in current project
-mkdir -p .claude/skills
-git clone https://github.com/YOUR_USERNAME/yourself-skill .claude/skills/create-yourself
+# Run from your workspace root
+mkdir -p ./skills
+git clone https://github.com/Orien233/yourself-skill-for-openclaw ./skills/create-yourself
+```
 
-# Or install globally (available in all projects)
-git clone https://github.com/YOUR_USERNAME/yourself-skill ~/.claude/skills/create-yourself
+### Claude Code (Compatible)
+
+```bash
+# For Claude Code compatibility in the current project
+mkdir -p ./skills
+git clone https://github.com/Orien233/yourself-skill-for-openclaw ./skills/create-yourself
 ```
 
 ### Dependencies (Optional)
@@ -55,22 +60,33 @@ pip install -r requirements.txt
 
 ## Usage
 
-In Claude Code, type:
+In OpenClaw (recommended), start with:
+
+```
+/skill create-yourself
+```
+
+If native commands are already registered in your environment, you can also try:
 
 ```
 /create-yourself
 ```
 
-Follow the prompts to enter your alias, basic info, and self-portrait, then choose your data sources. All fields are skippable—descriptions alone are enough to generate a skill.
+Follow the prompts to enter your alias, basic info, and self-portrait, then choose your data sources. All fields are skippable except slug.
 
-After creation, invoke it with `/{slug}` to start talking.
+> Slug constraints: only `a-z0-9_`; prefer English/pinyin/underscores; keep it short to avoid long command names.
+
+After creation, **prefer `/skill {slug}`** to invoke your self Skill. `/{slug}` is optional only when native command registration succeeds.
 
 ### Management Commands
+
+`/skill {slug}` is the most reliable entrypoint. `/{slug}`, `/{slug}-self`, and `/{slug}-persona` depend on dynamic command registration and may be unavailable in some environments.
 
 | Command | Description |
 |---------|-------------|
 | `/list-selves` | List all self Skills |
-| `/{slug}` | Full Skill (think and speak like you) |
+| `/skill {slug}` | Recommended full Skill invocation |
+| `/{slug}` | Optional direct invocation (if native command is registered) |
 | `/{slug}-self` | Self-archive mode (recall and analyze yourself) |
 | `/{slug}-persona` | Persona mode (personality and expression only) |
 | `/yourself-rollback {slug} {version}` | Rollback to a previous version |
@@ -176,11 +192,13 @@ create-yourself/
 │   ├── photo_analyzer.py       # Photo EXIF analyzer
 │   ├── skill_writer.py         # Skill file manager
 │   └── version_manager.py      # Version archive & rollback
-├── .claude/skills/{slug}/      # Generated self Skills (invocable)
+├── selves/example_me            # Built-in example in this repository (not runtime output)
 ├── docs/PRD.md
 ├── requirements.txt
 └── LICENSE
 ```
+
+> Directory note: `selves/example_me` is a built-in sample in this repo. Runtime-generated skills are written to `./skills/{slug}` by default.
 
 ---
 
@@ -213,7 +231,7 @@ This project's architectural inspiration comes from:
 
 Yourself.skill turns the lens inward: the subject is no longer someone else, but **you**. Thanks to both original authors for their creativity and open-source spirit.
 
-This project follows the [AgentSkills](https://agentskills.io) open standard, compatible with Claude Code and OpenClaw.
+This project follows the [AgentSkills](https://agentskills.io) open standard, compatible with OpenClaw (recommended) and Claude Code (compatible).
 
 ---
 
@@ -229,4 +247,4 @@ You can disagree with it, correct it, overwrite it in the next release.
 
 **After all, the essence of digital life is not immortality—it is version control.**
 
-MIT License © [YOUR_NAME](https://github.com/YOUR_USERNAME)
+MIT License © [Notdog](https://github.com/notdog1998)
